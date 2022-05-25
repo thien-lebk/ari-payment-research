@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<!-- <Header> -->
+<%- include("chucnang/header.ejs") %>
+<!-- <End of Header> -->
+
+<body>
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+
+
+  <!-- Them nguoi dung -->
+  <div class="container-sm text-center mt-5">
+    <h1 class="text-danger"><%= title %></h1>
+    <!-- <p>Welcome to <%= title %></p> -->
+    <h1> <%= status %> </h1>
+    <form method="POST" action="/themnguoidung" class="w-50 mx-auto">
+      <div class="form-group">
+        <input type="text" name="usr" class="form-control mt-3" id="exampleInputEmail1" aria-describedby="emailHelp"
+          placeholder="Username">
+        <input type="password" name="pass" class="form-control mt-3" id="exampleInputEmail1"
+          aria-describedby="emailHelp" placeholder="Password">
+        <br>
+        <label for="inputState" class="font-weight-bold text-danger">Phân loại người dùng</label>
+        <select id="role" name="role" class="form-control">
+          <option value="" selected>Người dùng bình thường</option>
+          <option value="admin" select>Admin</option>
+
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-outline-danger">Submit</button>
+    </form>
+  </div>
+  <!-- end them nguoi dung -->
+
+</body>
+
+</html>

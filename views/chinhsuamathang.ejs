@@ -1,0 +1,79 @@
+<!-- http://localhost:3000/chinhsua/onyCct5Q  -->
+<!DOCTYPE html>
+<html>
+<!-- <Header> -->
+
+
+<head>
+  <title>GNKSDK</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="../stylesheets/all.min.css">
+  <link rel="stylesheet" href="../stylesheets/style.css">
+  <link rel="stylesheet" href="../stylesheets/owl.carousel.min.css">
+  <link rel="stylesheet" href="../stylesheets/owl.theme.default.min.csss">
+  <script type="text/javascript" src="../js/jquery-3.5.1.min.js" defer></script>
+  <script type="text/javascript" src="../js/bootstrap.min.js" defer></script>
+  <script type="text/javascript" src="../js/owl.carousel.min.js" defer></script>
+  <script type="text/javascript" src="../js/index.js" defer></script>
+</head>
+<!-- end of head -->
+
+
+
+<!-- <End of Header> -->
+
+<body>
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+  <div style="max-width: 600px; text-align: center;" class="container">
+    <h1>Chỉnh sửa <%= sanpham.ten %></h1>
+    <form method="POST" action=<%= "" %>>
+      <div class="form-group" style="padding: 0 2vw;">
+        <label for="">Tên mặt hàng</label>
+        <input type="text" name="ten" class="form-control" value='<%= sanpham.ten %>'>
+        <label for="">Mô tả</label>
+        <textarea rows="6" type="text" name="mota" class="form-control" ><%= sanpham.mota %></textarea>
+        <label for="">Ảnh</label>
+        <input type="text" name="anh" class="form-control" value='<%= sanpham.anh %>'>
+        <label for="">Số lượng</label>
+        <input type="number" name="soluong" class="form-control" value='<%= sanpham.soluong %>'>
+        <label for="">Giá tiền</label>
+        <input type="number" name="gia" class="form-control" value='<%= sanpham.gia %>'>
+        <label for="">Giá Khuyến mãi</label>
+        <input type="number" name="giakm" class="form-control" value='<%= sanpham.giakm %>'>
+        <label for="">Hạn khuyến mãi</label>
+        <input type="date" name="hankm" class="form-control" value='<%= sanpham.hankm %>'>
+        <label for="">Chuyên mục</label>
+        <select name="chuyenmuc" id="chuyenmuc">
+          <!-- Su dung forEach -->
+          <%  chuyenmuc.forEach(element => { %>
+          <% if(element.ten == sanpham.chuyenmuc) {%>
+          <option value='<%= element.ten %>' selected> <%= element.ten %></option>
+          <% } else{ %>
+          <option value='<%= element.ten %>'> <%= element.ten %></option>
+          <% } %>
+          <% }); %>
+
+        </select>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">Lưu lại</button>
+      </div>
+    </form>
+
+
+    <div class="text-center mt-3">
+      <form method="POST" action=<%= "/xoa/" + sanpham.id %>>
+        <button type="submit" class="btn btn-danger">Xóa sản phẩm</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+
+</html>

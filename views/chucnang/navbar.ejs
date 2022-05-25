@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-xl navbar-light bg-light">
+  <a class="navbar-brand" href="/" style="color: red; font-size: 30px; font-weight: bolder;">
+    <img style="height: 50px;" src="/img/nav/nav-logo.png" alt="nav-logo">
+    <span class="d-none d-lg-inline-block">GNKSDK</span>
+  </a>
+  <form class="form-inline my-2 my-lg-0" method="GET" action="/search">
+    <input class="form-control mr-sm-2" style="border: 1px solid red; width: 40vw !important; max-width: 300px;"
+      type="search" placeholder="Search" aria-label="Search" name="name">
+    <button class="btn btn-danger my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+  </form>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto" style="display: flex; justify-self: end;">
+      <% if(name == ""){ %>
+      <li class="nav-item active mx-1"><a href="/dangki" class="btn btn-outline-danger" role="button"
+          aria-pressed="true">Đăng kí</a></li>
+      <li class="nav-item mx-1"><a class="btn btn-light" href="/dangnhap" role="button" aria-pressed="true">Đăng
+          nhập</a></li>
+      <% } %>
+
+      <% if(name){%>
+
+
+      <% if(role){%>
+      <div class="dropdown">
+        <a class="btn btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">Quản lý</a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <!-- <a class="dropdown-item" href="/themchuyenmuc">Thêm chuyên mục</a> -->
+          <a class="dropdown-item" href="/themchuyenmuc">Quản lý chuyên mục</a>
+          <a class="dropdown-item" href="/themmathang">Thêm mặt hàng</a>
+          <a class="dropdown-item" href="/themnguoidung">Thêm người dùng</a>
+          <% } %>
+
+
+          <li><a class="dropdown-item" href="/lichsudathang">Lịch sử đặt hàng</a></li>
+          <li><a class="dropdown-item" href="/donhangchuathanhtoan">Đơn hàng chưa thanh toán</a></li>
+          <li><a class="dropdown-item" href="/giohang">Xem giỏ hàng</a></li>
+          <% if(role){%>
+        </div>
+      </div>
+      <% } %>
+      <li><a class="dropdown-item nav-dropdown-item" href="/">Xin chào <%= name %></a></li>
+      <li><a class="btn btn-danger nav-dropdown-item" href="/logout">Đăng xuất</a></li>
+      <% } %>
+    </ul>
+  </div>
+
+
+
+
+
+</nav>
+<!-- end of nav -->

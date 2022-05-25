@@ -1,0 +1,60 @@
+/* nav */
+
+/* .dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+} */
+
+.container {
+  max-width: 1440px;
+}
+
+.nav-dropdown-item:hover {
+  text-decoration: underline;
+  transition: all 0.5s ease;
+}
+
+.price {
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 0px!important;
+}
+
+.ogri-price {
+  color: rgb(199, 194, 194);
+  font-size: 10px;
+}
+
+.border-product-combo {
+  border: 0.5px solid rgb(218, 213, 213);
+}
+
+.hover-product {
+  transition: all 0.4s;
+}
+
+.hover-product:hover {
+  box-shadow: 5px 5px 20px rgb(200, 200, 200) !important;
+}
+
+.margin-items figure {
+  margin: 2% !important;
+}
+
+/* login form */
+
+.container-sign-in {
+  width: 100%;
+  max-width: 500px;
+  margin: 15vh auto;
+}
+
+.form-sign-in {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.log-in-btn {
+  width: 150px;
+}

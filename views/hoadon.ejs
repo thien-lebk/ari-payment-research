@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+
+<!-- <Header> -->
+<%- include("chucnang/header.ejs") %>
+<!-- <End of Header> -->
+
+<body>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+  <div class="container mt-5 mb-5">
+    
+    <div style=" padding-bottom: 30px;">
+      <h4 style="color: red;"><strong>THÔNG TIN ĐƠN HÀNG</strong></h4>
+    </div>
+    <div>
+      <div class="card mx-auto" style="width: 18rem;">
+        <img src=<%= mathang.anh %> alt=<%= mathang.ten %>>
+        <div class="card-body">
+          <h5 class="card-title"> Mặt hàng: <%= mathang.ten %></h5>
+          <!-- <p> Mô tả: <%= mathang.mota %></p> -->
+          <P><strong>Số lượng</strong> <%= soluongdat %></p>
+          <P id="id_khoahoc" style="display: none;"><strong>ID Khoá học:</strong> <%= mathang.id %></p>
+          <p class="card-text " id="tong_tien"><strong>Thành tiền: </strong><%= (mathang.gia*soluongdat).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %>đ</p>
+          <form action="xacnhanthanhtoan" method="post">
+            <input type="hidden" name="ten" value=<%= mathang.ten %>>
+            <input type="hidden" name="anh" value=<%= mathang.anh %>>
+            <input type="hidden" name="mota" value=<%= mathang.mota %>>
+            <input type="hidden" name="id" value=<%= mathang.id %>>
+            <input type="hidden" name="soluongdat" value=<%= soluongdat %>>
+            <input type="hidden" id="thanhtien" name="thanhtien" value=<%= mathang.gia*soluongdat %>>
+            <label>Hình thức thanh toán</label>
+            <select class="form-control" name="thanhtoan" id="thanhtoan">
+              <!-- Su dung forEach -->
+              <option value="vnpay">VNPAY</option>
+              <option value="ether">Ether</option>
+              <option value="momo"> Momo</option>
+            </select>
+            
+            <div style="text-align: center;">
+              <button class="btn btn-success mt-2" type="submit" id="xac-nhan"  data-toggle="modal" data-target="#exampleModalCenter">Xác nhận</button>
+            </div>
+          </form>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Nhập thông tin thanh toán</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="xacnhanthanhtoan" method="POST" id="ether-transact">
+
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Địa chỉ ví:</label>
+            <input type="text" class="form-control" id="user-address" name="user_address" placeholder="0x7De8d441fBb7a6868D3ce81eE26d1Fc0868E8761">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Khoá cá nhân:</label>
+            <textarea class="form-control" id="private-key" name="private_key" placeholder="6B4C896CAEB9839A433F0BADBBB2FA28D7B2691E268DFD577C55D9B6D606EC7D"></textarea>
+          </div>
+          <input type="hidden" name="thanhtoan" value="ether">
+          <input type="hidden" name="ten" value=<%= mathang.ten %>>
+          <input type="hidden" name="anh" value=<%= mathang.anh %>>
+          <input type="hidden" name="mota" value=<%= mathang.mota %>>
+          <input type="hidden" name="id" value=<%= mathang.id %>>
+          <input type="hidden" name="soluongdat" value=<%= soluongdat %>>
+          <input type="hidden" id="thanhtien" name="thanhtien" value=<%= mathang.gia*soluongdat/5673104.33 %>>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-success" form="ether-transact" id="load1" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing ">Xác nhận thanh toán</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <%- include("chucnang/footer.ejs") %>
+
+  <script>
+    $('select').on('change', function (e) {
+      var optionSelected = $("option:selected", this);
+      var valueSelected = this.value;
+      console.log(valueSelected);
+      if (valueSelected == 'ether'){
+        $("#id_khoahoc").show();
+        $("#xac-nhan").prop('type', 'button');
+        $("#tong_tien").text('Thành tiền: ' + <%= (mathang.gia*soluongdat/5673104.33).toFixed(3) %> + ' ETH')
+      }else{
+        $("#id_khoahoc").hide();
+        $("#xac-nhan").prop('type', 'submit');
+        $("#tong_tien").text('Thành tiền: ' + (<%= mathang.gia*soluongdat %>).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 'đ')
+      }
+  });
+
+  $('#load1').on('click', function() {
+    var $this = $(this);
+    $this.html("<i class='fa fa-circle-o-notch fa-spin'></i> Đang xử lí")
+});
+
+  </script>
+</body>
+
+</html>

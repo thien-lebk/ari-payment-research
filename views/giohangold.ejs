@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<!-- <Header> -->
+<%- include("chucnang/header.ejs") %>
+<!-- <End of Header> -->
+
+<body>
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+  <div class="container mb-5">
+  <% if(giohang.mathang.length >0) { %>
+  <form action="thanhtoangiohang" method="post">
+    <input type="hidden" name="idgiohang" value="<%= giohang.idgiohang %>">
+    <button type="submit" class="btn btn-lg btn-success mt-5">Thanh toán giỏ hàng</button>
+  </form>
+  <div style="padding-top: 30px; padding-bottom: 30px;">
+    <h4 style="color: red;"><strong>SẢN PHẨM</strong></h4>
+  </div>
+  <% } else {%>
+  <h2>Giỏ hàng trống</h2>
+  <% } %>
+
+  <% giohang.mathang.forEach(element => { %>
+  <div class="card" style="width: 18rem; margin-bottom: 40px;">
+    <img src=<%= element.anh %> alt=<%= element.ten %>>
+    <div class="card-body">
+      <h5 class="card-title"> Mặt hàng: <%= element.ten %></h5>
+      <p> Mô tả: <%= element.mota %></p>
+      <P>Số lượng trong kho: <%= element.soluong %></P>
+      <!-- Kiểm tra coi có khuyến mãi ko -->
+      <% var date1 = new Date(element.hankm); %>
+      <% var date2 = new Date() %>
+      <% if ((date1.getTime() >= date2.getTime()) && (element.giakm != "")) { %>
+        <p class="price"><%= element.giakm %> đ</p>
+        <p class="ogri-price"><del><%= element.gia %> đ</del></p>
+      <% } else { %>
+      <p class="price" class="card-text">Giá <%= element.gia %>đ</p>
+      <% } %>
+      <form action="xoasanphamkhoigio" method="post">
+        <input type="hidden" name="ten" value=<%= element.ten %>>
+        <input type="hidden" name="anh" value=<%= element.anh %>>
+        <input type="hidden" name="mota" value=<%= element.mota %>>
+        <input type="hidden" name="id" value=<%= element.id %>>
+        <input type="hidden" id="gia" name="gia" value=<%= element.gia %>>
+        <label>Số lượng</label>
+        <input type="number" id="<%= element.id %>" name="<%= element.id %>" value="<%= element.soluongdat %>"
+          onchange="<%= 'a' + element.id %>(),tongtien()" />
+        <p>Thành tiền:</p>
+        <p style="font-size: 20px;" class="price" id="<%= element.ten %>"><%= element.gia %>đ</p>
+        <button type="submit" class="btn btn-danger mt-3">Xóa</button>
+      </form>
+    </div>
+  </div>
+  <% }) %>
+</div>
+  <script>
+    //  var sum = 0;
+    var xhttp = new XMLHttpRequest();
+  <% giohang.mathang.forEach(element => { %>
+      function <%= 'a' + element.id %> () {
+        var idgiohang = "<%= giohang.idgiohang %>";
+        var idmathang = "<%= element.id %>";
+        var soluong = document.getElementById("<%= element.id %>").value;
+      // Kiểm tra coi có khuyến mãi ko
+      <% var date1 = new Date(element.hankm); %>
+      <% var date2 = new Date() %>  
+      <% if ((date1.getTime() >= date2.getTime()) && (element.giakm != "")) { %>
+          document.getElementById("<%= element.ten %>").innerHTML = soluong * <%= element.giakm %> +"đ";
+      <% } else { %>
+          document.getElementById("<%= element.ten %>").innerHTML = soluong * <%= element.gia %> +"đ";
+      <% } %>
+          let item = {
+            idgiohang: idgiohang,
+            idmathang: idmathang,
+            soluong: soluong
+          };
+        $.ajax({
+          url: 'capnhatgiohang',
+          type: 'POST',
+          dataType: 'object',
+          data: item
+        });
+      }
+        <%= 'a' + element.id %> ();
+    <% }) %>
+      //Function tinh tong gia tien
+      function tongtien() {
+        var sum = 0;
+  <% giohang.mathang.forEach(element => { %>
+    var a<%= element.id %> = document.getElementById("<%= element.id %>").value;
+          <% var date1 = new Date(element.hankm); %>
+          <% var date2 = new Date() %>  
+          <% if ((date1.getTime() >= date2.getTime()) && (element.giakm != "")) { %>
+            a <%= element.id %>  =  a <%= element.id %>  * <%= element.giakm %>;
+          <% } else { %>
+            a <%= element.id %>  =  a <%= element.id %>  * <%= element.gia %>;
+          <% } %>
+            sum += a <%= element.id %> ;
+    <% }) %>
+          document.getElementById("tongtien").innerHTML = "Tổng tiền: " + sum + "đ";
+      }
+    tongtien();
+  </script>
+  <%- include("chucnang/footer.ejs") %>
+
+  
+</body>
+
+</html>

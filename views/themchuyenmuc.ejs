@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+   <!-- <Header> -->
+    <%- include("chucnang/header.ejs") %>
+    <!-- <End of Header> -->
+  
+    <body>
+        <!-- Navnar -->
+      <%- include("chucnang/navbar.ejs") %>
+        <!-- End of Navnar -->
+        <div class="container text-center">
+          <h1 style="color: rgb(224, 51, 51);"><%= title %></h1>
+          <h1> <%= status %> </h1>
+          <div style="text-align: center;">
+            <form method="POST" action="/themchuyenmuc" class="form-group mx-auto" style="width: 75%;">
+              <!-- <div class="row">
+                <input type="text" name="ten" class="form-control col-9" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tên chuyên mục">
+                <div class="col-1"></div>
+
+                <button type="submit" class="btn btn-outline-danger col-2" >Thêm</button>
+
+              </div> -->
+                <!-- <label style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51); margin-bottom: 20px;" for="">Tên chuyên mục</label> -->
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control border-danger" placeholder="Tên chuyên mục" aria-label="Recipient's username" aria-describedby="button-addon2" name="ten" id="exampleInputEmail1">
+                  <div class="input-group-append">
+                    <button class="btn btn-danger" type="submit" id="button-addon2">Thêm</button>
+                  </div>
+                </div>
+            </form>
+          </div>
+          
+        </div>
+        <div class="container text-center mt-5">
+          <h1 class="text-danger">Chỉnh sửa chuyên mục</h1>
+          <table class="table mx-auto" style="width: 75%;">
+            <thead class="thead-dark">
+              <tr>
+                <th >#</th>
+                <th >Tên danh mục</th>
+                <th >Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% var counter = 1; %> 
+              <%  dsChuyenMuc.forEach(element => { %>
+                <tr>
+                  <td ><%= counter %> </td>
+                  <% counter = counter +1 %> 
+                  <td >
+                    <form id=<%= "update-form" + element.ten%> method="POST">
+                      <input class="form-control" type="hidden" name="old_ten" value="<%= element.ten %>">
+                      <input class="form-control" type="text" name="new_ten" placeholder="<%= element.ten %>" value="">
+                    </form>
+                  </td>
+                  <td >
+                    <form method="POST" class="p-0 m-0">
+                      <input type="hidden" name="ten" value="<%= element.ten %>">
+                      <button class="btn btn-warning" style="width: 35%;" type="submit" formaction="/suachuyenmuc" form=<%= "update-form" + element.ten%>>Lưu</button>
+                      <button class="btn btn-danger"  style="width: 35%;" type="submit" formaction="/xoachuyenmuc">Xoá</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          
+        </div>
+        <%- include("chucnang/footer.ejs") %>
+  </body>
+</html>

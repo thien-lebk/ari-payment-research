@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<!-- <Header> -->
+<%- include("chucnang/header.ejs") %>
+<!-- <End of Header> -->
+
+<body>
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+<div class="container text-center">
+  <h1 class="text-danger">Lịch sử đặt hàng</h1>
+  <div class="form-inline" style="margin: 20px;">
+    <h2 class="text-danger">Hình thức thanh toán: &nbsp;&nbsp;</h2>
+    <select class="custom-select ">
+      <option selected value="vnpay">VNPAY</option>
+      <option value="ether">Ether</option>
+    </select>
+  </div>
+  
+  <table class="table table-striped" id="vnpay_table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">ID hóa đơn</th>
+        <th scope="col">Hình thức thanh toán</th>
+        <th scope="col">Mã giao dịch</th>
+        <th scope="col">Số tiền</th>
+        <th scope="col">Thời gian đặt</th>
+        <th scope="col">Chi tiết</th>
+      </tr>
+    </thead >
+    <tbody>
+      <% hoadon.forEach(element => { %>
+      <% if (element.thanhtoan == "vnpay"){ %> 
+      <tr>
+        <th scope="row"></th>
+        <td><%= element.idhoadon %></td>
+        <td><%= element.thanhtoan %></td>
+        <td><%= element.magiaodich %></td>
+        <td><%= (element.thanhtien).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %> VND</td>
+        <td><%= new Date(element.thoigian).toLocaleString() %></td>
+        <td>
+          <form action="chitietlichsudonhang" method="post">
+            <input type="hidden" name="idhoadon" value=<%= element.idhoadon %>>
+            <button class="btn btn-outline-danger" type="submit">Xem chi tiết</button>
+          </form>
+        </td>
+      </tr>
+      <% } %> 
+      <%  }); %>
+      
+
+    </tbody>
+  </table>
+
+  <div id="ether_table" style="display: none;">
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">@ Address </span>
+      </div>
+      <input type="text" class="form-control" placeholder="User Address"id="user_address">
+    </div>
+
+    <table class="table table-striped" >
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Thời gian</th>
+          <th scope="col">ID khoá học</th>
+          <th scope="col">Giá</th>
+          <th scope="col">Số lượng</th>
+        </tr>
+      </thead >
+      <tbody id="ds_khoahoc">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  
+  <%- include("chucnang/footer.ejs") %>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
+
+  <script>
+    var bookStore;
+    var userAccount;
+
+    function startApp() {
+        var bookStoreAddress = "0x30d9072A565be8C25580e442C872aF6421b26cD8";
+        bookStore = new web3js.eth.Contract(
+            [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"constant":true,"inputs":[],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"getOrderHistory","outputs":[{"components":[{"internalType":"uint256","name":"token","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint8","name":"quantity","type":"uint8"},{"internalType":"uint256","name":"price_in_wei","type":"uint256"}],"internalType":"struct BookStoreInit.order[]","name":"","type":"tuple[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address payable","name":"_from","type":"address"},{"internalType":"uint256","name":"_token","type":"uint256"},{"internalType":"uint8","name":"_quantity","type":"uint8"}],"name":"implementTransaction","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"incognitoAddress","outputs":[{"internalType":"address payable","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"internalType":"address payable","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address payable","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}],
+            bookStoreAddress
+        );
+    }
+
+    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+    if (typeof web3 !== "undefined") {
+      // Use Mist/MetaMask's provider
+      web3js = new Web3(web3.currentProvider);
+      console.log("Connected to Web3 Provider!!!!!!!!!");
+    } else {
+        // Handle the case where the user doesn't have Metamask installed
+        // Probably show them a message prompting them to install Metamask
+        console.log("Failed to connect to Web3 Provider!!!!!!!!!");
+    }
+    // Now you can start your app & access web3 freely:
+    startApp();
+
+    // Test function
+    //web3js.eth.getBalance('0x7De8d441fBb7a6868D3ce81eE26d1Fc0868E8761').then(console.log)
+    //web3js.eth.getGasPrice().then(console.log)
+
+    $("#user_address").change(()=>{
+      $("#ds_khoahoc").empty();
+      var address = $("#user_address").val();
+      console.log(address);
+      bookStore.methods.getOrderHistory(address).call().then(transacts => {
+     
+        transacts.forEach(tran =>{
+          //console.log(transacts);
+          var d = moment.unix(tran[1]).format('LLL')
+          $("#ds_khoahoc").append(`<tr><td>${d}</td><td>${tran[0]}</td><td>${(tran[3]/1000000000000000000).toFixed(3)} ETH</td><td>${tran[2]}</td></tr>`);
+        })
+        
+      });
+    })
+    
+
+
+
+    
+
+    $('select').on('change', function (e) {
+      var optionSelected = $("option:selected", this);
+      var valueSelected = this.value;
+      console.log(valueSelected);
+      if (valueSelected == 'ether'){
+        $("#ether_table").show();
+
+        $("#vnpay_table").hide();
+      }else{
+        $("#ether_table").hide();
+        $("#vnpay_table").show();
+      }
+  });
+  </script>
+</body>
+
+</html>

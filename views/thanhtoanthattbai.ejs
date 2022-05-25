@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- <Header> -->
+
+<head>
+  <title>Thanh toán thất bại </title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="../stylesheets/all.min.css">
+  <link rel="stylesheet" href="../stylesheets/style.css">
+  <link rel="stylesheet" href="../stylesheets/owl.carousel.min.css">
+  <link rel="stylesheet" href="../stylesheets/owl.theme.default.min.csss">
+  <script type="text/javascript" src="../js/jquery-3.5.1.min.js" defer></script>
+  <script type="text/javascript" src="../js/bootstrap.min.js" defer></script>
+  <script type="text/javascript" src="../js/owl.carousel.min.js" defer></script>
+  <script type="text/javascript" src="../js/index.js" defer></script>
+</head>
+<!-- end of head -->
+<!-- <End of Header> -->
+
+<body>
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+
+  <!-- End of Navnar -->
+  <!-- <ul>
+                <p>Danh mục</p>
+                <%  find.forEach(element => { %>
+                  <li><a href=<%= "/danhmuc/" + element.ten %> > <%= element.ten %></a></li>
+          
+             <% }); %>
+            </ul> -->
+  <!-- <body> -->
+  <div class="container">
+    <div style="padding-top: 50px; padding-bottom: 30px;">
+      <h4 style="color: red;"><strong>Thanh toán thất bại </strong></h4>
+      <h4 style="color: red;"><strong>Đơn hàng sẽ được chuyển vào mục Đơn hàng chưa thanh toán với ID hóa đơn <%- idhoadon -%></strong></h4>
+
+    </div>
+   </div>
+    
+</body>
+
+
+</html>

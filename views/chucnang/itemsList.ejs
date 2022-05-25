@@ -1,0 +1,39 @@
+<%  listsp.forEach(element => { %>
+  <div class="border-product-combo hover-product text-center"
+    style="background-color: white; margin-right: 10%; margin-left: 10%; margin-bottom: 10px;">
+    <div style="border: 10px solid white; position: relative;">
+      <img src=<%= element.anh %> alt=<%= element.ten %>>
+      <div style="height: 30px">
+        <h3 style="font-size: 14px; padding-left: 2%; margin-top: 3%; color: black;"><%= element.ten %></h3>
+      </div>
+      <i class="far fa-star"></i>
+      <i class="far fa-star"></i>
+      <i class="far fa-star"></i>
+      <i class="far fa-star"></i>
+      <i class="far fa-star"></i>
+      <hr style="margin-top: 10px; margin-bottom: 10px;">
+      <!-- Kiểm tra coi có khuyến mãi không? -->
+      <div style="height: 40px; text-align: center;">
+        <% var date1 = new Date(element.hankm); %>
+        <% var date2 = new Date() %>
+        <% if ((date1.getTime() >= date2.getTime()) && (element.giakm != "")) { %>
+        <p class="price"><%= element.giakm.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %> đ</p>
+        <p class="ogri-price"><del><%= element.gia.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %> đ</del></p>
+        <% } else { %>
+        <p class="price"><%= element.gia.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %> đ</p>
+        <% } %>
+      </div>
+      <div style="text-align: center;">
+        <form action="/chitietmathang" method="post">
+          <input type="hidden" name="id" value=<%= element.id %>>
+          <button type="submit" class="btn btn-success">Chọn mua</button>
+        </form>
+        <% if(role){ %>
+        <a style="margin-top: 10px;" class="btn btn-warning" href=<%= "/chinhsua/" + element.id %> role="button">Sửa</a>
+        <% }%>
+      </div>
+      
+    </div>
+  </div>
+<% }); %>
+

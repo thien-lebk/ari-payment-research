@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <!-- <Header> -->
+  <%- include("chucnang/header.ejs") %>
+  <!-- <End of Header> -->
+
+  <body>
+      <!-- Navnar -->
+    <%- include("chucnang/navbar.ejs") %>
+      <!-- End of Navnar -->
+    <div class="container mb-5 text-center">
+      <div class="my-5 p-3" style="border: 1px solid grey; display: inline-block;">
+        <p>ID hóa đơn: <%= donhang.idhoadon %></p><hr>
+        <p>Hình thức thanh toán: <%= donhang.thanhtoan %></p><hr>
+        <!-- <p>Mã giao dịch: <%= donhang.magiaodich %> </p><hr> -->
+        <% if (donhang.thanhtoan != "ether"){ %> 
+          <p>Mã giao dịch: <%= donhang.magiaodich %></p>
+          
+        <% }else{ %>
+          <p>Mã giao dịch: <a href="<%= 'https://rinkeby.etherscan.io/tx/'+donhang.magiaodich %>"><%= donhang.magiaodich %></a> </p>
+          
+        <% } %>
+        <% if (donhang.thanhtoan != "ether"){ %>
+          <p>Số tiền: <%= (donhang.thanhtien/1) %> VND</p><hr>
+        <% }else{ %>
+          <p>Số tiền: <%= (donhang.thanhtien/1).toFixed(3) %> ETH</p><hr>
+        <% } %> 
+        
+        <p>Thời gian đặt hàng: <%= new Date(donhang.thoigian).toLocaleString() %></p>
+      </div>
+    
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Tên sản phẩm </th>
+          <th scope="col">Đơn giá</th>
+          <th scope="col">Số lượng</th>
+       
+        </tr>
+      </thead>
+      <tbody>
+        <% donhang.hang.forEach(element => { %>
+          <tr>
+          <th scope="row"></th>
+          <td><%= element.ten %></td>
+          <td><%= element.gia %></td>
+          <td><%= element.soluongdat %></td>
+        
+        </tr>
+        <%  }); %>
+
+      </tbody>
+    </table>
+    </div>
+    <%- include("chucnang/footer.ejs") %>
+  </body>
+</html>

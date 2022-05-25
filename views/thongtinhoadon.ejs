@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<!-- <Header> -->
+<%- include("chucnang/header.ejs") %>
+<!-- <End of Header> -->
+
+<body>
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+  
+  <div class="container text-center mt-5 mb-5">
+
+    <div style=" padding-bottom: 30px;">
+      <h4 style="color: red;"><strong>Hóa đơn thanh toán</strong></h4>
+    </div>
+
+    <!-- <div class="card mx-auto" style="width: 18rem;">
+      <p>User: <%= donhang.usr %></p>
+      <p>ID hóa đơn: <%= donhang.idhoadon %></p>
+      <p>Hình thức thanh toán: <%= donhang.thanhtoan %></p>
+      <p>Mã giao dịch: <%= donhang.magiaodich %></p>
+      <p>Số tiền: <%= donhang.thanhtien %></p>
+      <p>Thời gian mua: <%= donhang.thoigian %>đ</p>
+    </div> -->
+    <table class="table table-striped w-50 text-left mx-auto">
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <td>User:</td>
+          <td><%= donhang.usr %></td>
+        </tr>
+        <tr>
+          <td>ID hóa đơn:</td>
+          <td><%= donhang.idhoadon %></td>
+        </tr>
+        <tr>
+          <td>Hình thức thanh toán:</td>
+          <td><%= donhang.thanhtoan %></td>
+        </tr>
+        <tr>
+          <td>Mã giao dịch:</td>
+          <!-- <td><%= donhang.magiaodich %></td> -->
+          <% if (donhang.thanhtoan != "ether"){ %> 
+            <td><%= donhang.magiaodich %></td>
+            
+          <% }else{ %>
+            <td><a href="<%= 'https://rinkeby.etherscan.io/tx/'+donhang.magiaodich %>"><%= donhang.magiaodich %></a> </td>
+            
+          <% } %>
+        </tr>
+        <tr>
+          <td>Số tiền:</td>
+          <% if (donhang.thanhtoan != "ether"){ %> 
+            <td><%= donhang.thanhtien %> VND</td>
+          <% }else{ %>
+            <td><%= (donhang.thanhtien/1).toFixed(3) %> ETH</td>
+          <% } %> 
+        </tr>
+        <tr>
+          <td>Thời gian mua:</td>
+          <td><%= donhang.thoigian %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+
+
+
+
+  <%- include("chucnang/footer.ejs") %>
+  <script>
+    
+  </script>
+
+</body>
+
+</html>

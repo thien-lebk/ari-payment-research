@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <!-- <Header> -->
+    <%- include("chucnang/header.ejs") %>
+    <!-- <End of Header> -->
+  
+    <body>
+        <!-- Navnar -->
+      <%- include("chucnang/navbar.ejs") %>
+        <!-- End of Navnar -->
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <form method="POST" action="/xacthucdangnhap">
+     <div class="alert alert-primary" role="alert">
+  This is a primary alert—check it out!
+</div>
+  </body>
+</html>

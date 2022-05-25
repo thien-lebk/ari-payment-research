@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<!-- <Header> -->
+<%- include("chucnang/header.ejs") %>
+<!-- <End of Header> -->
+
+<body onload="tongtien()">
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+  <div class="container mb-5 text-center">
+      <% if(giohang.mathang.length >0) { %>
+        <h2 class="text-danger  pb-2" id="tongtien">Tổng tiền: </h2>
+        <form action="thanhtoangiohang" method="post">
+          <input type="hidden" name="idgiohang" value="<%= giohang.idgiohang %>">
+    <button type="submit" class="btn btn-outline-danger">Thanh toán</button>
+  </form>
+  <h2 class="text-danger pt-5 pb-5" id="tongtien">Danh sách mặt hàng: </h2>
+<% } else {%>
+  <h2>Giỏ hàng trống</h2>
+  <% } %>
+ 
+  <div class="row" style="justify-content : center">
+  <% giohang.mathang.forEach(element => { %>
+    <div class="col-3">
+      <div class="card mb-5" style="width: 18rem;">
+        <img src=<%= element.anh %> alt=<%= element.ten %>>
+        <div class="card-body">
+          <h5 class="card-title"> Khóa học: <%= element.ten %></h5>
+          <!-- <p> Mô tả: <%= element.mota %></p> -->
+          <!-- <P>Số lượng trong kho: <%= element.soluong %></P> -->
+          <!-- Kiểm tra coi có khuyến mãi ko -->
+          <% var date1 = new Date(element.hankm); %>
+          <% var date2 = new Date() %>  
+          <% if ((date1.getTime() >= date2.getTime()) && (element.giakm != "")) { %>
+            <div style="height: 50px;">
+              <p style="font-size: 16px;" class="card-text price">Giá <%= element.giakm.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %>đ</p>
+              <p class="card-text ogri-price"><del><%= element.gia.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %> đ</del></p>
+            </div>
+            
+          <% } else { %> 
+            <div style="height: 50px;">
+            <p style="font-size: 16px;" class="card-text price pb-2">Giá <%= element.gia.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %>đ</p>
+          </div>
+          <% } %> 
+          <form action="xoasanphamkhoigio" method="post">
+            <input type="hidden" name="ten" value=<%= element.ten %>>
+            <input type="hidden" name="anh" value=<%= element.anh %>>
+            <input type="hidden" name="mota" value=<%= element.mota %>>
+            <input type="hidden" name="id" value=<%= element.id %>>
+            <input type="hidden" id="gia" name="gia" value=<%= element.gia %>>
+            <div class="row">
+              <div class="col-6 text-right">
+                <p>Số lượng</p>
+              </div>
+              <div class="col-6 text-left">
+                <input min="1" style="max-width: 75px; min-width: 75px; text-align: center;" type="number" id="<%= element.id %>" name="<%= element.id %>" value="<%= element.soluongdat %>"
+              onchange="<%= 'a' + element.id %>(),tongtien()"/>
+              </div>
+            
+            
+            </div>
+            <div class="row">
+              <div class="col-6 text-right">
+                <p>Thành tiền:</p>
+              </div>
+              <div class="col-6 text-left">
+                <p id="<%= element.ten %>"><%= element.gia.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %>đ</p>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-danger">Xóa</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+  <% }) %>
+</div>
+</div>
+
+  <script>
+  //  var sum = 0;
+  var xhttp = new XMLHttpRequest();
+  <% giohang.mathang.forEach(element => { %>
+    function <%= 'a' + element.id %> () {
+      var idgiohang = "<%= giohang.idgiohang %>";
+      var idmathang = "<%= element.id %>";
+      var soluong = document.getElementById("<%= element.id %>").value;
+      // Kiểm tra coi có khuyến mãi ko
+      <% var date1 = new Date(element.hankm); %>
+      <% var date2 = new Date() %>  
+      <% if ((date1.getTime() >= date2.getTime()) && (element.giakm != "")) { %>
+        document.getElementById("<%= element.ten %>").innerHTML = (soluong * <%= element.giakm %>).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +"đ";
+      <% } else { %> 
+        document.getElementById("<%= element.ten %>").innerHTML = (soluong * <%= element.gia %>).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +"đ";
+      <% } %> 
+      
+      let item = {
+        idgiohang: idgiohang,
+        idmathang:idmathang,
+        soluong:soluong
+        };
+        $.ajax({
+    url: 'capnhatgiohang',
+    type: 'POST',
+    dataType: 'object',
+    data: item
+      });
+      }
+        <%= 'a' + element.id %> ();
+    <% }) %>
+      //Function tinh tong gia tien
+      function tongtien() {
+        var sum = 0;
+  <% giohang.mathang.forEach(element => { %>
+    var a<%= element.id %> = document.getElementById("<%= element.id %>").value;
+          <% var date1 = new Date(element.hankm); %>
+          <% var date2 = new Date() %>  
+          <% if ((date1.getTime() >= date2.getTime()) && (element.giakm != "")) { %>
+            a<%= element.id %>  =  a<%= element.id %>  * <%= element.giakm %>;
+          <% } else { %> 
+            a<%= element.id %>  =  a<%= element.id %>  * <%= element.gia %>;
+          <% } %>
+          sum += a<%= element.id %> ;
+    <% }) %>
+          document.getElementById("tongtien").innerHTML = "Tổng tiền: " + sum.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + "đ";
+      }
+    tongtien();
+  </script>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+    <%- include("chucnang/footer.ejs") %>
+</body>
+
+</html>

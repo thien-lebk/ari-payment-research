@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<!-- <Header> -->
+<%- include("chucnang/header.ejs") %>
+<!-- <End of Header> -->
+
+<body>
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+  <!-- Navnar -->
+  <div class="container text-center" style="max-width: 600px!important;">
+    <h1 style="color: rgb(224, 51, 51);" >Thêm mặt hàng</h1>
+    <!-- <h1 style="color: rgb(224, 51, 51);"><%= title %></h1> -->
+    <!-- <p>Welcome to <%= title %></p> -->
+    <div style="text-align: center;">
+      <form method="POST" action="/themmathang">
+        <div class="form-group">
+          <label style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51); margin-bottom: 20px;" for="">Tên mặt hàng</label>
+          <input type="text" name="ten" class="form-control">
+          <label style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51);margin-top: 20px; margin-bottom: 20px;" for="">Mô tả</label>
+          <textarea type="text" name="mota" class="form-control"></textarea>
+          <label  style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51);margin-top: 20px; margin-bottom: 20px;" for="">Ảnh</label>
+          <input type="text" name="anh" class="form-control">
+          <label  style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51);margin-top: 20px; margin-bottom: 20px;" for="">Số lượng</label>
+          <input type="number" name="soluong" class="form-control">
+          <label  style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51);margin-top: 20px; margin-bottom: 20px;" for="">Giá tiền</label>
+          <input type="number" name="gia" class="form-control">
+          <label  style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51);margin-top: 20px; margin-bottom: 20px;" for="">Giá Khuyến mãi</label>
+          <input type="number" name="giakm" class="form-control">
+          <label  style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51);margin-top: 20px; margin-bottom: 20px;" for="">Hạn khuyến mãi</label>
+          <input type="date" name="hankm" class="form-control">
+          <label  style="font-size: 24px; font-weight: 500; color: rgb(224, 51, 51);margin-top: 20px; margin-bottom: 20px;" for="">Chuyên mục</label>
+          <br>
+          <select name="chuyenmuc" id="chuyenmuc" class="form-control">
+            <!-- Su dung forEach -->
+            <%  chuyenmuc.forEach(element => { %>
+            <option value='<%= element.ten %>'> <%= element.ten %></option>
+            <% }); %>
+
+          </select>
+        </div>
+
+        <button style="margin-top: 10px; margin-bottom: 10px;" type="submit" class="btn btn-outline-danger">Submit</button>
+      </form>
+    </div>
+  </div>
+  <%- include("chucnang/footer.ejs") %>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<!-- <Header> -->
+<%- include("chucnang/header.ejs") %>
+<!-- <End of Header> -->
+
+<body>
+  <!-- Navnar -->
+  <%- include("chucnang/navbar.ejs") %>
+  <!-- End of Navnar -->
+  <div class="container text-center">
+    <h1 class="text-danger">Đơn hàng chưa thanh toán</h1>
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">ID hóa đơn</th>
+          <th scope="col">Hình thức thanh toán</th>
+          <th scope="col">Mã giao dịch</th>
+          <th scope="col">Số tiền</th>
+          <th scope="col">Thời gian đặt</th>
+          <th scope="col">Chi tiết</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% hoadon.forEach(element => { %>
+        <tr>
+          <th scope="row"></th>
+          <td><%= element.idhoadon %></td>
+          
+          <td><%= element.thanhtoan %></td>
+          <td><%= element.magiaodich %></td>
+          <td><%= (element.thanhtien).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") %></td>
+          <td><%= new Date(element.thoigian).toLocaleString() %></td>
+          <td>
+            <form action="donhangchuathanhtoan" method="post">
+  
+              <input type="hidden" name="idhoadon" value=<%= element.idhoadon %>>
+              <button type="submit" class="btn btn-outline-danger">Thanh toán</button>
+            </form>
+          </td>
+        </tr>
+        <%  }); %>
+  
+      </tbody>
+    </table>
+
+  </div>
+  <%- include("chucnang/footer.ejs") %>
+</body>
+
+</html>
