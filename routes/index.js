@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var controller = require('../controller/user.controller') //import controller
+var paymentController = require('../controller/payment') //import controller
 //Import auth.middleware
 var auth = require('../controller/auth.middleware');
 
@@ -58,15 +59,15 @@ router.post('/themmathang', auth.authen, controller.postthemmathang);
 //Chi tiet mat hang
 router.post('/chitietmathang', auth.authen, controller.chitietmathang);
 //Thanh toan
-router.post('/thanhtoan', auth.authen, controller.thanhtoan);
+router.post('/thanhtoan', auth.authen, paymentController.thanhtoan);
 //Hoadon
-router.post('/hoadon', auth.authen, controller.hoadon);
+router.post('/hoadon', auth.authen, paymentController.hoadon);
 //Xac nhan thanh toan
-router.post('/xacnhanthanhtoan', auth.authen, controller.xacnhanthanhtoan);
+router.post('/xacnhanthanhtoan', auth.authen, paymentController.xacnhanthanhtoan);
 //Lich su giao dich
-router.get('/lichsudathang', auth.authen, controller.lichsudathang);
+router.get('/lichsudathang', auth.authen, paymentController.lichsudathang);
 //Chi tiet Lich su don hang
-router.post('/chitietlichsudonhang', auth.authen, controller.chitietlichsudonhang);
+router.post('/chitietlichsudonhang', auth.authen, paymentController.chitietlichsudonhang);
 //Đăng xuất
 router.get('/logout', controller.logout);
 //Thêm giỏ hàng
@@ -78,9 +79,9 @@ router.post('/xoasanphamkhoigio', auth.authen, controller.xoasanphamkhoigio);
 //Cap nhat lai gio hang sau khi them san pham
 router.post('/capnhatgiohang', jsonParser, controller.capnhatgiohang);
 //Thanh toan gio hang
-router.post('/thanhtoangiohang', auth.authen, controller.thanhtoangiohang);
+router.post('/thanhtoangiohang', auth.authen, paymentController.thanhtoangiohang);
 //Thanh toan gio hang
-router.post('/xacnhanthanhtoangiohang', auth.authen, controller.xacnhanthanhtoangiohang);
+router.post('/xacnhanthanhtoangiohang', auth.authen, paymentController.xacnhanthanhtoangiohang);
 
 // Tới trang chỉnh sửa thông tin sản phẩm. theo id
 router.get('/themnguoidung', auth.authen, controller.themnguoidung);
@@ -88,8 +89,8 @@ router.post('/themnguoidung', auth.authen, controller.postthemnguoidung);
 
 
 //Trang đơn hàng chưa thanh toán
-router.get('/donhangchuathanhtoan', auth.authen, controller.donhangchuathanhtoan);
-router.post('/donhangchuathanhtoan', auth.authen, controller.postdonhangchuathanhtoan);      
+router.get('/donhangchuathanhtoan', auth.authen, paymentController.donhangchuathanhtoan);
+router.post('/donhangchuathanhtoan', auth.authen, paymentController.postdonhangchuathanhtoan);      
 //Payment
 router.get('/vnpay_return', function (req, res, next) {
     var vnp_Params = req.query;

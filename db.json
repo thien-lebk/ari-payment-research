@@ -45,6 +45,11 @@
       "username": "thien123123",
       "password": "4297f44b13955235245b2497399d7a93",
       "giohang": "klNWZAJX"
+    },
+    {
+      "username": "bhnhox",
+      "password": "d1cfda0755f136a072d70f476cac7f10",
+      "giohang": "Pwmsicnm"
     }
   ],
   "GioHang": [
@@ -94,6 +99,11 @@
     {
       "username": "thien123123",
       "idgiohang": "klNWZAJX",
+      "mathang": []
+    },
+    {
+      "username": "bhnhox",
+      "idgiohang": "Pwmsicnm",
       "mathang": []
     }
   ],
@@ -2059,6 +2069,60 @@
       "thanhtien": "500000",
       "idgiohang": 0,
       "thoigian": "2022-05-24T14:57:53.606Z",
+      "trangthai": "dathanhtoan"
+    },
+    {
+      "idhoadon": "68bRqgVX",
+      "magiaodich": "M6Sgh1wN",
+      "thanhtoan": "vnpay",
+      "usr": "bhnhox",
+      "hang": [
+        {
+          "ten": "PRESSURE VESSEL INSPECTION",
+          "gia": "200000",
+          "id": "767582725",
+          "soluongdat": "1"
+        }
+      ],
+      "thanhtien": "200000",
+      "idgiohang": 0,
+      "thoigian": "2022-05-27T03:18:27.569Z",
+      "trangthai": "chuathanhtoan"
+    },
+    {
+      "idhoadon": "iD0doxwp",
+      "magiaodich": "CS5XpV5L",
+      "thanhtoan": "vnpay",
+      "usr": "bhnhox",
+      "hang": [
+        {
+          "ten": "PRESSURE VESSEL INSPECTION",
+          "gia": "200000",
+          "id": "767582725",
+          "soluongdat": "1"
+        }
+      ],
+      "thanhtien": "200000",
+      "idgiohang": 0,
+      "thoigian": "2022-05-27T03:18:51.891Z",
+      "trangthai": "chuathanhtoan"
+    },
+    {
+      "idhoadon": "kbxO71au",
+      "magiaodich": "1HdCF0Ew",
+      "thanhtoan": "vnpay",
+      "usr": "bhnhox",
+      "hang": [
+        {
+          "ten": "PRESSURE VESSEL INSPECTION",
+          "gia": "200000",
+          "id": "767582725",
+          "soluongdat": "1"
+        }
+      ],
+      "thanhtien": "200000",
+      "idgiohang": 0,
+      "thoigian": "2022-05-27T03:18:59.030Z",
       "trangthai": "dathanhtoan"
     }
   ],
