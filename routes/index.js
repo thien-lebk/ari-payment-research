@@ -85,12 +85,12 @@ router.post('/xacnhanthanhtoangiohang', auth.authen, paymentController.xacnhanth
 
 // Tới trang chỉnh sửa thông tin sản phẩm. theo id
 router.get('/themnguoidung', auth.authen, controller.themnguoidung);
-router.post('/themnguoidung', auth.authen, controller.postthemnguoidung);      
+router.post('/themnguoidung', auth.authen, controller.postthemnguoidung);
 
 
 //Trang đơn hàng chưa thanh toán
 router.get('/donhangchuathanhtoan', auth.authen, paymentController.donhangchuathanhtoan);
-router.post('/donhangchuathanhtoan', auth.authen, paymentController.postdonhangchuathanhtoan);      
+router.post('/donhangchuathanhtoan', auth.authen, paymentController.postdonhangchuathanhtoan);
 //Payment
 router.get('/vnpay_return', function (req, res, next) {
     var vnp_Params = req.query;
@@ -114,56 +114,56 @@ router.get('/vnpay_return', function (req, res, next) {
     var checkSum = sha256(signData);
     var idHoaDon = (vnp_Params.vnp_OrderInfo);
     var transNo = (vnp_Params.vnp_TransactionNo);
-    if(transNo == 0){
+    if (transNo == 0) {
         // res.render('error',{message: "Giao dịch thất bại"});
         var find = db.get('Chuyenmuc').value();
         var mathang = db.get('MatHang').value();
         var name = "";
         var role = "";
-    
+
         if (req.cookies.info) {
             if (req.cookies.info.username) {
                 name = req.cookies.info.username;
-            } 
+            }
             if (req.cookies.info.role) {
                 role = req.cookies.info.role;
-            } 
+            }
         }
-    
-        res.render('thanhtoanthattbai', { title: 'Express', find: find, listsp: mathang, name: name, role:role, idhoadon:idHoaDon});
+
+        res.render('thanhtoanthattbai', { title: 'Express', find: find, listsp: mathang, name: name, role: role, idhoadon: idHoaDon });
     }
-    if(secureHash === checkSum){
+    if (secureHash === checkSum) {
 
         //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
 
-    //    var hoaDon = db.get("HoaDon").find({ idhoadon: idHoaDon }).value();
+        //    var hoaDon = db.get("HoaDon").find({ idhoadon: idHoaDon }).value();
 
-        
-       // hoaDon.trangthai='dathanhtoan';
-      //  console.log(hoaDon);
+
+        // hoaDon.trangthai='dathanhtoan';
+        //  console.log(hoaDon);
         //Luu thong tin vào db
-         db.get("HoaDon").find({ idhoadon: idHoaDon }).assign({ trangthai:"dathanhtoan" }).write();
+        db.get("HoaDon").find({ idhoadon: idHoaDon }).assign({ trangthai: "dathanhtoan" }).write();
 
         //Get data đe render trang thongtinhoadon
 
-         var name = req.cookies.info.username;
-    var role = "";
-    var chuyenmuc = db.get('Chuyenmuc').value();
-   // var mathang = db.get('MatHang').find({ id: id }).value();
+        var name = req.cookies.info.username;
+        var role = "";
+        var chuyenmuc = db.get('Chuyenmuc').value();
+        // var mathang = db.get('MatHang').find({ id: id }).value();
         var donhang = db.get('HoaDon').find({ idhoadon: idHoaDon }).value();
         console.log(donhang);
         //Xoa id gio hang
         // Sau khi hoàn thành thì empty cái giỏ hàng
-    db.get('GioHang').find({ idgiohang: donhang.idgiohang }).assign({mathang: []}).write();
+        db.get('GioHang').find({ idgiohang: donhang.idgiohang }).assign({ mathang: [] }).write();
 
 
-    if(req.cookies.info.role){
-        role = req.cookies.info.role;
-    }
-         res.render('thongtinhoadon', { chuyenmuc: chuyenmuc,  donhang: donhang, name: name,role:role });
+        if (req.cookies.info.role) {
+            role = req.cookies.info.role;
+        }
+        res.render('thongtinhoadon', { chuyenmuc: chuyenmuc, donhang: donhang, name: name, role: role });
 
-    } else{
-        res.render('success', {code: '97'})
+    } else {
+        res.render('success', { code: '97' })
     }
 });
 
@@ -179,19 +179,19 @@ router.get('/vnpay_ipn', function (req, res, next) {
     var secretKey = config.get('vnp_HashSecret');
     var querystring = require('qs');
     var signData = secretKey + querystring.stringify(vnp_Params, { encode: false });
-    
+
     var sha256 = require('sha256');
 
     var checkSum = sha256(signData);
 
-    if(secureHash === checkSum){
+    if (secureHash === checkSum) {
         var orderId = vnp_Params['vnp_TxnRef'];
         var rspCode = vnp_Params['vnp_ResponseCode'];
         //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-        res.status(200).json({RspCode: '00', Message: 'success'})
+        res.status(200).json({ RspCode: '00', Message: 'success' })
     }
     else {
-        res.status(200).json({RspCode: '97', Message: 'Fail checksum'})
+        res.status(200).json({ RspCode: '97', Message: 'Fail checksum' })
     }
 });
 
@@ -213,6 +213,80 @@ function sortObject(o) {
     return sorted;
 }
 
+
+//momo
+//return from momo
+router.get('/momo_return', function (req, res, next) {
+    var momoParams = req.query;
+    // console.log('partnerCode',momoParams['partnerCode']);
+    // console.log(momoParams['orderId']);
+    // console.log(momoParams['requestId']);
+    // console.log(momoParams['amount']);
+    // console.log(momoParams['orderInfo']);
+    // console.log('orderType',momoParams['orderType']);
+    // console.log(momoParams['transId']);
+    console.log('resultCode', momoParams['resultCode']);
+    // console.log(momoParams['message']);
+    // console.log(momoParams['payType']);
+    // console.log(momoParams['responseTime']);
+    // console.log(momoParams['extraData']);
+    // console.log(momoParams['signature']);
+    const idHoaDon = momoParams['orderId'];
+
+    if (momoParams['resultCode'] != 0) {
+        // res.render('error',{message: "Giao dịch thất bại"});
+        var find = db.get('Chuyenmuc').value();
+        var mathang = db.get('MatHang').value();
+        var name = "";
+        var role = "";
+
+        if (req.cookies.info) {
+            if (req.cookies.info.username) {
+                name = req.cookies.info.username;
+            }
+            if (req.cookies.info.role) {
+                role = req.cookies.info.role;
+            }
+        }
+
+        res.render('thanhtoanthattbai', { title: 'Express', find: find, listsp: mathang, name: name, role: role, idhoadon: momoParams['orderId'] });
+    } else {
+        
+
+            //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
+
+            //    var hoaDon = db.get("HoaDon").find({ idhoadon: idHoaDon }).value();
+
+
+            // hoaDon.trangthai='dathanhtoan';
+            //  console.log(hoaDon);
+            //Luu thong tin vào db
+            db.get("HoaDon").find({ idhoadon: idHoaDon }).assign({ trangthai: "dathanhtoan" }).write();
+
+            //Get data đe render trang thongtinhoadon
+
+            var name = req.cookies.info.username;
+            var role = "";
+            var chuyenmuc = db.get('Chuyenmuc').value();
+            // var mathang = db.get('MatHang').find({ id: id }).value();
+            var donhang = db.get('HoaDon').find({ idhoadon: idHoaDon }).value();
+            //Xoa id gio hang
+            // Sau khi hoàn thành thì empty cái giỏ hàng
+            db.get('GioHang').find({ idgiohang: donhang.idgiohang }).assign({ mathang: [] }).write();
+
+
+            if (req.cookies.info.role) {
+                role = req.cookies.info.role;
+            }
+            res.render('thongtinhoadon', { chuyenmuc: chuyenmuc, donhang: donhang, name: name, role: role });
+
+
+       
+
+    }
+
+});
+
 module.exports = router;
 
 
@@ -223,8 +297,8 @@ router.get('/danhmuc/:tendanhmuc', controller.xemtheodanhmuc);
 router.get('/chinhsua/:id', auth.authen, controller.chinhsuamathang);
 router.post('/chinhsua/:id', auth.authen, controller.postchinhsuamathang);      // Xử lí form chỉnh sửa
 router.post('/xoa/:id', auth.authen, controller.xoasanpham);      // Xử lí form chỉnh sửa
-router.post('/suachuyenmuc', auth.authen, controller.suachuyenmuc);   
-router.post('/xoachuyenmuc', auth.authen, controller.xoachuyenmuc);      
+router.post('/suachuyenmuc', auth.authen, controller.suachuyenmuc);
+router.post('/xoachuyenmuc', auth.authen, controller.xoachuyenmuc);
 
 router.get('/search', controller.search);
 

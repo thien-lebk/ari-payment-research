@@ -43,7 +43,6 @@ module.exports.authen = function (req, res, next) {
     } else if (info.username) {
         var username = info.username
         var password = info.password;
-        console.log("USR la "+username + " pas la "+ password);
         
         var find = db.get('User').find({ username: username }).value();
 
